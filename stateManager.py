@@ -20,9 +20,7 @@ class StateManager:
             self.xVel = np.zeros((sim_steps, len(self.objList)))
 
     def collision_handler(self):        
-        # for now leave empty, idea is to work the logic of the ground collision logic
-            # for the bounce position and take some time to figure out what I want to do with velocity
-            # probably find some weird way to solve energy momentum discrepency
+        # probably find some weird way to solve energy momentum discrepency
             # for now assume only two objects can collide at once. If greater than that it will become trickier
         tempPos = np.zeros((2,len(self.objList)))
         for i, obj in enumerate(self.objList):
@@ -32,6 +30,7 @@ class StateManager:
 
         for i in range(len(self.objList)): # can use i and j to set the obj in objList with objList[var] but I need to be certain that it doesn't change through cycles (it should but I'd want to verify)
             if I != 1: # this is a hack solution to prevent double bouncing in the same listing, I need to remove this and replace it with a setup that instead just ignores the next movement
+                # Going to change this out for a logic out for transfer of momentum between the objects only in the distance vector direction. Want to do some reading on how most sims handle collision physics. Feels like solving for both p and K for both every contact. Two object collision is easy, more object collision will take a long time.
                 for j in range(len(self.objList)):
                     if dist_calc(tempPos[i],tempPos[j]) <= self.objList[i].radius + self.objList[j].radius and i != j:
                         I += 1
