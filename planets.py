@@ -16,7 +16,7 @@ class Planet:
         r = hex(self.color[0])[2:]
         g = hex(self.color[1])[2:]
         b = hex(self.color[2])[2:]
-        return f'#{r}{g}{b}'
+        return f'#{r:02}{g:02}{b:02}'
 
     # changes the velocity of the objects during the basic steps
     def step_vel(self):
