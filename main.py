@@ -5,7 +5,12 @@ from planets import Planet
 from stateManager import StateManager
 import sys, os
 
-test = sys.argv[1]
+try:
+    test = sys.argv[1]
+except:
+    test = "BaseNewtonBall"
+    print(f'No test input given. defaulting to {test}')
+
 idt = 0.0001
 simLength = 10
 sim_steps = int(simLength/idt)
@@ -36,13 +41,13 @@ def Main(inputTest):
             Mars  = Planet(iname = 'Mars',  ivel = np.array([10, 0.25]), ipos = np.array([5, 0]), iradius = 0.25, icolor = [255, 150, 0])
             state = StateManager(iobjList=[Earth, Mars])
 
-        case "BaseNewtonBall":
+        case "BaseNewtonBall": # show the transfer of momentum in a simple situation
             gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5)
             Earth = Planet(iname = 'Earth', ivel = np.array([0, 1]), ipos = np.array([10, 2]), iradius = 0.5, icolor = [0, 0, 255])
             Mars  = Planet(iname = 'Mars',  ivel = np.array([0, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0])
             state = StateManager(iobjList=[Earth, Mars])
 
-        case "CompNewtonBall":
+        case "CompNewtonBall": # shwo the transfer of momentum in a complex situation
             gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iyBound=[-10,10])
             Earth = Planet(iname = 'Earth', ivel = np.array([1, 1]), ipos = np.array([5,  0]), iradius = 0.5, icolor = [0, 0, 255])
             Mars  = Planet(iname = 'Mars',  ivel = np.array([0, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0])

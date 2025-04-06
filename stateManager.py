@@ -1,9 +1,5 @@
 import numpy as np
 import gvars
-# simple 2D distance calculator
-def dist_calc(pos1, pos2):
-    temp = pos1 - pos2
-    return np.sqrt(temp[0]**2+temp[1]**2)
 
 class StateManager:
     # Initialization of overall state
@@ -35,13 +31,10 @@ class StateManager:
             if doubleBounce != 1: # this is a hack solution to prevent double bouncing in the same listing, I need to remove this and replace it with a setup that instead just ignores the next movement
                 # Going to change this out for a logic out for transfer of momentum between the objects only in the distance vector direction. Want to do some reading on how most sims handle collision physics. Feels like solving for both p and K for both every contact. Two object collision is easy, more object collision will take a long time.
                 for j in range(len(self.objList)):
-                    if dist_calc(tempPos[i],tempPos[j]) <= self.objList[i].radius + self.objList[j].radius and i != j:
+                    if gvars.dist_calc(tempPos[i],tempPos[j]) <= self.objList[i].radius + self.objList[j].radius and i != j:
                         doubleBounce += 1
-                        bounceSlope = np.array([tempPos[j][1]-tempPos[i][1], tempPos[i][0]-tempPos[j][0]])
-                        bounceSlope = bounceSlope/np.sqrt(bounceSlope.dot(bounceSlope))
-
-                        diffSlope = np.array([tempPos[i][0]-tempPos[j][0], tempPos[i][1]-tempPos[j][1]])
-                        diffSlope = diffSlope/np.sqrt(diffSlope.dot(diffSlope))
+                        diffSlope = gvars.unit_vector(tempPos[i], tempPos[j])
+                        bounceSlope = np.array([diffSlope[1], -diffSlope[0]])
                         
                         # TODO: This solution is better, but it currently violates energy conservation. So I need to fix that.
                         temp_vel            = self.objList[j].vel.dot(bounceSlope)*bounceSlope + self.objList[i].vel.dot(diffSlope)*diffSlope
@@ -54,7 +47,7 @@ class StateManager:
     # debug component of the function is for the final print statement before a realtime visualizer is implimented.
     def step(self):
         for obj in self.objList:
-            obj.step_vel()
+            obj.step_vel(self.objList)
 
         if len(self.objList) > 1:
             self.collision_handler()
