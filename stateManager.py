@@ -39,10 +39,14 @@ class StateManager:
                         doubleBounce += 1
                         bounceSlope = np.array([tempPos[j][1]-tempPos[i][1], tempPos[i][0]-tempPos[j][0]])
                         bounceSlope = bounceSlope/np.sqrt(bounceSlope.dot(bounceSlope))
-                        diffSlope   = np.array([tempPos[i][0]-tempPos[j][0], tempPos[i][1]-tempPos[j][1]])
-                        diffSlope   = diffSlope/np.sqrt(diffSlope.dot(diffSlope))
-                        self.objList[i].vel = self.objList[i].vel.dot(bounceSlope)*bounceSlope - self.objList[i].vel.dot(diffSlope)*diffSlope
-                        self.objList[j].vel = self.objList[j].vel.dot(bounceSlope)*bounceSlope - self.objList[j].vel.dot(diffSlope)*diffSlope
+
+                        diffSlope = np.array([tempPos[i][0]-tempPos[j][0], tempPos[i][1]-tempPos[j][1]])
+                        diffSlope = diffSlope/np.sqrt(diffSlope.dot(diffSlope))
+                        
+                        # TODO: This solution is better, but it currently violates energy conservation. So I need to fix that.
+                        temp_vel            = self.objList[j].vel.dot(bounceSlope)*bounceSlope + self.objList[i].vel.dot(diffSlope)*diffSlope
+                        self.objList[i].vel = self.objList[i].vel.dot(bounceSlope)*bounceSlope + self.objList[j].vel.dot(diffSlope)*diffSlope
+                        self.objList[j].vel = temp_vel
                         break
 
     # Handles the top level functionality of the state at every internal step.
