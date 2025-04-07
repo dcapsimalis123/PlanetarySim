@@ -22,7 +22,11 @@ class Planet:
     # changes the velocity of the objects during the basic steps
     def step_vel(self,objList):
         self.vel[0] = self.vel[0]+gvars.g*gvars.dt
-        # self.vel += [(gvars.G*self.mass*obj.mass)/(gvars.dist_calc(self.pos,obj.pos)**2)*gvars.dt*gvars.unit_vector(self.pos, obj.pos) for obj in objList]
+        for obj in objList:
+            if self.name != obj.name:
+                dist       = gvars.dist_calc(  self.pos, obj.pos)
+                unitVector = gvars.unit_vector(self.pos, obj.pos)
+                self.vel -= gvars.G*self.mass*obj.mass/(dist**2)*gvars.dt*unitVector
 
     # changes position of the object based on its current velocity
     def step_pos(self):

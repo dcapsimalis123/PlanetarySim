@@ -8,7 +8,7 @@ import sys, os
 try:
     test = sys.argv[1]
 except:
-    test = "BaseNewtonBall"
+    test = "BaseInterGravity"
     print(f'No test input given. defaulting to {test}')
 
 idt = 0.0001
@@ -51,6 +51,18 @@ def Main(inputTest):
             gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iyBound=[-10,10])
             Earth = Planet(iname = 'Earth', ivel = np.array([1, 1]), ipos = np.array([5,  0]), iradius = 0.5, icolor = [0, 0, 255])
             Mars  = Planet(iname = 'Mars',  ivel = np.array([0, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0])
+            state = StateManager(iobjList=[Earth, Mars])
+
+        case "BaseInterGravity": # shows basic gravitational attraction
+            gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iG = 10)
+            Earth = Planet(iname = 'Earth', ivel = np.array([1, 0]), ipos = np.array([10, 2]), iradius = 0.5, icolor = [0, 0, 255], imass = 1)
+            Mars  = Planet(iname = 'Mars',  ivel = np.array([1, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0], imass = 1)
+            state = StateManager(iobjList=[Earth, Mars])
+
+        case "OrbitalGravity": # shows basic gravitational attraction
+            gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iG = 10)
+            Earth = Planet(iname = 'Earth', ivel = np.array([1.12, 0]), ipos = np.array([10, 2]), iradius = 0.5, icolor = [0, 0, 255], imass = 1)
+            Mars  = Planet(iname = 'Mars',  ivel = np.array([-1.12, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0], imass = 1)
             state = StateManager(iobjList=[Earth, Mars])
 
     for i in range(sim_steps):
