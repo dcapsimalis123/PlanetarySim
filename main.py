@@ -26,7 +26,7 @@ def Main(inputTest):
         case "BaseColl": # basic collision test
             gvars.init(ig=0.0,idt=0.0001,iBounceCoef = 0.5)
             Earth = Planet(iname = 'Earth', ivel = np.array([0,  0.25]), ipos = np.array([0, 0]), iradius = 0.25, icolor = [0, 0, 255])
-            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, -0.25]), ipos = np.array([0, 2]), iradius = 0.25)
+            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, -0.25]), ipos = np.array([0, 2]), iradius = 0.25, icolor = [255, 150, 0])
             state = StateManager(iobjList=[Earth, Mars])
 
         case "CompColl": # complex collision test CURRENTLY BROKEN
@@ -37,7 +37,7 @@ def Main(inputTest):
 
         case "CompGravColl": # complex collision simple gravity test LIKELY BROKEN
             gvars.init(ig=-10.0,idt=0.0001,iBounceCoef = 0.5)
-            Earth = Planet(iname = 'Earth', ivel = np.array([0,  0.25]), ipos = np.array([0, 0]), iradius = 0.25, icolor = [0, 0, 255])
+            Earth = Planet(iname = 'Earth', ivel = np.array([10,  0.25]), ipos = np.array([1, 0]), iradius = 0.25, icolor = [0, 0, 255])
             Mars  = Planet(iname = 'Mars',  ivel = np.array([10, 0.25]), ipos = np.array([5, 0]), iradius = 0.25, icolor = [255, 150, 0])
             state = StateManager(iobjList=[Earth, Mars])
 
