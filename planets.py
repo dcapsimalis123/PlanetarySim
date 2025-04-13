@@ -28,6 +28,10 @@ class Planet:
                 unitVector = gvars.unit_vector(self.pos, obj.pos)
                 self.vel -= gvars.G*self.mass*obj.mass/(dist**2)*gvars.dt*unitVector
 
+    # returns the kinetic energy of the object
+    def return_ke(self):
+        return 0.5*self.mass*(self.vel.dot(self.vel))
+
     # changes position of the object based on its current velocity
     def step_pos(self):
         self.pos[0] += self.vel[0]*gvars.dt

@@ -24,15 +24,15 @@ def Main(inputTest):
             state = StateManager(iobjList=[Earth])
 
         case "BaseColl": # basic collision test
-            gvars.init(ig=0.0,idt=0.0001,iBounceCoef = 0.5)
-            Earth = Planet(iname = 'Earth', ivel = np.array([0,  0.25]), ipos = np.array([0, 0]), iradius = 0.25, icolor = [0, 0, 255])
-            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, -0.25]), ipos = np.array([0, 2]), iradius = 0.25, icolor = [255, 150, 0])
+            gvars.init(ig=0.0,idt=0.0001,iBounceCoef = 0.5, iG = 0)
+            Earth = Planet(iname = 'Earth', ivel = np.array([0,  0.25]), ipos = np.array([0, 0]), iradius = 0.25, icolor = [0, 0, 255],   imass=1)
+            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, -0.25]), ipos = np.array([0, 2]), iradius = 0.25, icolor = [255, 150, 0], imass=1)
             state = StateManager(iobjList=[Earth, Mars])
 
         case "CompColl": # complex collision test CURRENTLY BROKEN
-            gvars.init(ig=0.0,idt=0.0001,iBounceCoef = 0.5)
-            Earth = Planet(iname = 'Earth', ivel = np.array([1,  1]),  ipos = np.array([1, 0]), iradius = 0.25, icolor = [0, 0, 255])
-            Mars  = Planet(iname = 'Mars',  ivel = np.array([-1, -1]), ipos = np.array([6, 5]), iradius = 0.25, icolor = [255, 150, 0])
+            gvars.init(ig=0.0,idt=0.0001,iBounceCoef = 0.5, iG = 0)
+            Earth = Planet(iname = 'Earth', ivel = np.array([1,  1]),  ipos = np.array([1, 0]), iradius = 0.25, icolor = [0, 0, 255],   imass=1)
+            Mars  = Planet(iname = 'Mars',  ivel = np.array([-1, -1]), ipos = np.array([6, 5]), iradius = 0.25, icolor = [255, 150, 0], imass=1)
             state = StateManager(iobjList=[Earth, Mars])
 
         case "CompGravColl": # complex collision simple gravity test LIKELY BROKEN
@@ -42,20 +42,20 @@ def Main(inputTest):
             state = StateManager(iobjList=[Earth, Mars])
 
         case "BaseNewtonBall": # show the transfer of momentum in a simple situation
-            gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5)
-            Earth = Planet(iname = 'Earth', ivel = np.array([0, 1]), ipos = np.array([10, 2]), iradius = 0.5, icolor = [0, 0, 255])
-            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0])
+            gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iG = 0)
+            Earth = Planet(iname = 'Earth', ivel = np.array([0, 1]), ipos = np.array([10, 2]), iradius = 0.5, icolor = [0, 0, 255],   imass = 1)
+            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0], imass = 1)
             state = StateManager(iobjList=[Earth, Mars])
 
         case "CompNewtonBall": # shwo the transfer of momentum in a complex situation
-            gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iyBound=[-10,10])
-            Earth = Planet(iname = 'Earth', ivel = np.array([1, 1]), ipos = np.array([5,  0]), iradius = 0.5, icolor = [0, 0, 255])
-            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0])
+            gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iyBound=[-10,10], iG = 0)
+            Earth = Planet(iname = 'Earth', ivel = np.array([1, 1]), ipos = np.array([5,  0]), iradius = 0.5, icolor = [0, 0, 255],   imass = 1)
+            Mars  = Planet(iname = 'Mars',  ivel = np.array([0, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0], imass = 1)
             state = StateManager(iobjList=[Earth, Mars])
 
         case "BaseInterGravity": # shows basic gravitational attraction
             gvars.init(ig = 0, idt = 0.0001, iBounceCoef=0.5, iG = 10)
-            Earth = Planet(iname = 'Earth', ivel = np.array([1, 0]), ipos = np.array([10, 2]), iradius = 0.5, icolor = [0, 0, 255], imass = 1)
+            Earth = Planet(iname = 'Earth', ivel = np.array([1, 0]), ipos = np.array([10, 2]), iradius = 0.5, icolor = [0, 0, 255],   imass = 1)
             Mars  = Planet(iname = 'Mars',  ivel = np.array([1, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0], imass = 1)
             state = StateManager(iobjList=[Earth, Mars])
 
@@ -65,13 +65,19 @@ def Main(inputTest):
             Mars  = Planet(iname = 'Mars',  ivel = np.array([-1.12, 0]), ipos = np.array([10, 6]), iradius = 0.5, icolor = [255, 150, 0], imass = 1)
             state = StateManager(iobjList=[Earth, Mars])
 
+    if state.debug:
+        Ke = np.zeros((len(state.objList),2))
+        for i, obj in enumerate(state.objList):
+            Ke[i,0]  = obj.return_ke()
     for i in range(sim_steps):
         state.step()
         state.time += gvars.dt
     if state.debug:
-        debug_printout(state)
+        for i, obj in enumerate(state.objList):
+            Ke[i,1]  = obj.return_ke()
+        debug_printout(state,Ke)
 
-def debug_printout(state):
+def debug_printout(state,ke):
     t = np.linspace(0,10,sim_steps)
     # 13412:13417
 
@@ -94,6 +100,7 @@ def debug_printout(state):
 
     [plt.plot(state.xPos[:,i],state.yPos[:,i], '*', color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
     plt.show()
+    print(f'Kinetic Energy of System at start: {sum(ke[:,0])}\nKinetic Energy of System at end: {sum(ke[:,1])}')
     print(state.xVel[-1,:],state.yVel[-1,:])
 
 Main(test)
