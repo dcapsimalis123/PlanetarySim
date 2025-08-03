@@ -79,16 +79,16 @@ def debug_printout(state):
     ax = f.subplots(2,2)
     ax[0,0].set_title('Y Pos')
     [print(f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
-    [ax[0,0].plot(t,state.yPos[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
+    [ax[0,0].plot(t, state.yPos[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
 
     ax[0,1].set_title('Y Vel')
-    [ax[0,1].plot(t,state.yVel[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
+    [ax[0,1].plot(t, state.yVel[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
 
     ax[1,0].set_title('X Pos')
-    [ax[1,0].plot(t,state.xPos[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
+    [ax[1,0].plot(t, state.xPos[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
 
     ax[1,1].set_title('X Vel')
-    [ax[1,1].plot(t,state.xVel[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
+    [ax[1,1].plot(t, state.xVel[:,i], color=f'{state.objList[i].return_color()}') for i in range(len(state.objList))]
     plt.show()
 
 
